@@ -1,0 +1,34 @@
+{
+    "name": "webcoast/dot-forms",
+    "title": "Dot Forms",
+    "description": "TYPO3 CMS extension for storing TCA fields with dot notation into a single field",
+    "keywords": ["typo3", "cms", "tca", "json", "flexform", "dynamic", "form", "fields"],
+    "type": "typo3-cms-extension",
+    "minimum-stability": "stable",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Thorben Nissen",
+            "email": "thorben@webcoast.dk"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        },
+        "typo3/cms": {
+            "extension-key": "dot_forms"
+        }
+    },
+    "require": {
+        "typo3/cms-core": "^12.4",
+        "typo3/cms-backend": "^12.4",
+        "typo3/cms-extbase": "^12.4",
+        "typo3/cms-frontend": "^12.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "WEBcoast\\DotForms\\": "Classes"
+        }
+    }
+}
