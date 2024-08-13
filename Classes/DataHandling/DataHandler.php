@@ -49,6 +49,13 @@ class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
         parent::updateDB($table, $id, $fieldArray);
     }
 
+    public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0, $dontSetNewIdIndex = false)
+    {
+        $fieldArray = $this->processDotFields($table, $id, $fieldArray, 'new');
+
+        return parent::insertDB($table, $id, $fieldArray, $newVersion, $suggestedUid, $dontSetNewIdIndex);
+    }
+
     protected function processDotFields($table, $id, $fieldArray, $status): array
     {
         if ($status !== 'new') {
