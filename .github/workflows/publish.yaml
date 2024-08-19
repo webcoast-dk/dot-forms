@@ -50,6 +50,3 @@ jobs:
 
          - name: Publish to TER
            run: php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{ steps.get-version.outputs.version }}
-           
-         - name: Refresh token
-           run: php ~/.composer/vendor/bin/tailor ter:token:refresh ${{ secrets.TYPO3_REFRESH_TOKEN }}
