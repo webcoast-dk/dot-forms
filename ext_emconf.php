@@ -3,7 +3,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Dot Forms',
     'description' => 'Create virtual fields just like flex forms, but with pure TCA.',
-    'version' => '1.0.1',
+    'version' => '1.0.2',
     'category' => 'be',
     'constraints' => [
         'depends' => [
