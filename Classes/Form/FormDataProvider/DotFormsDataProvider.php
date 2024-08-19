@@ -26,6 +26,9 @@ class DotFormsDataProvider implements FormDataProviderInterface
                         }
                         $currentArray = $currentArray[$fieldPart] ?? null;
                     }
+                    if ($fieldConfig['config']['type'] === 'select' && !is_array($currentArray)) {
+                        $currentArray = $currentArray === null ? $result['databaseRow'][$fieldName] ?? [] : [$currentArray];
+                    }
                     $result['databaseRow'][$fieldName] = $currentArray ?? $result['databaseRow'][$fieldName] ?? null;
                 }
             }
