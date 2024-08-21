@@ -29,7 +29,7 @@ class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
                     if (!is_array($currentValue)) {
                         $currentValue = [];
                     }
-                    $currentValue = $currentValue[$fieldPart];
+                    $currentValue = $currentValue[$fieldPart] ?? null;
                 }
                 if ($currentValue !== $fieldValue) {
                     $this->historyRecords[$table . ':' . $id]['oldRecord'][$fieldName] = $currentValue;
