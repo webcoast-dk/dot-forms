@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace WEBcoast\DotForms\DataProcessing;
 
 
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 
@@ -19,7 +21,13 @@ class DotFormsDataProcessor implements DataProcessorInterface
                 $mainFieldName = substr($fieldName, 0, strpos($fieldName, '.'));
                 if (isset($cObj->data[$mainFieldName])) {
                     if (!isset($processedData[$mainFieldName])) {
-                        $processedData[$mainFieldName] = json_decode($cObj->data[$mainFieldName], true);
+                        if ($mainFieldName === 'settings' && ($contentObjectConfiguration['settings.'] ?? [])) {
+                            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+                            $settings = $typoScriptService->convertTypoScriptArrayToPlainArray($contentObjectConfiguration['settings.']);
+                            $processedData[$mainFieldName] = array_merge($settings, json_decode($cObj->data[$mainFieldName], true));
+                        } else {
+                            $processedData[$mainFieldName] = json_decode($cObj->data[$mainFieldName], true);
+                        }
                     }
                 }
             }
