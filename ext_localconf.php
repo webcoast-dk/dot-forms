@@ -10,4 +10,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
     'depends' => [
         \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class
     ],
+    'before' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class,
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+        \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class
+    ]
 ];
