@@ -17,3 +17,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
         \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class
     ]
 ];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema::class] = [
+    'className' => \WEBcoast\DotForms\Database\Schema\TcaSchemaOverride::class,
+];
