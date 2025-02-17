@@ -7,6 +7,7 @@ namespace WEBcoast\DotForms\DataHandling;
 
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
 {
@@ -40,6 +41,38 @@ class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
         }
 
         return $fieldArray;
+    }
+
+    public function recordInfo($table, $id, $fieldList)
+    {
+        $realFieldList = [];
+        foreach (GeneralUtility::trimExplode(',', $fieldList) as $field) {
+            if (str_contains($field, '.')) {
+                $mainFieldName = substr($field, 0, strpos($field, '.'));
+                $realFieldList[] = $mainFieldName;
+            } else {
+                $realFieldList[] = $field;
+            }
+        }
+
+        $data = parent::recordInfo($table, $id, implode(',', array_unique($realFieldList)));
+
+        foreach (GeneralUtility::trimExplode(',', $fieldList) as $field) {
+            if (str_contains($field, '.')) {
+                $mainFieldName = substr($field, 0, strpos($field, '.'));
+                $fieldParts = explode('.', substr($field, strpos($field, '.') + 1));
+                $currentValue = json_decode($data[$mainFieldName] ?? '[]', true);
+                foreach ($fieldParts as $fieldPart) {
+                    if (!is_array($currentValue)) {
+                        $currentValue = [];
+                    }
+                    $currentValue = $currentValue[$fieldPart] ?? null;
+                }
+                $data[$field] = $currentValue;
+            }
+        }
+
+        return $data;
     }
 
     public function updateDB($table, $id, $fieldArray)
