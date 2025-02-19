@@ -12,7 +12,7 @@ class ActionController extends ExtbaseActionController
 {
     public function initializeAction()
     {
-        $contentObject = $this->request->getAttribute('currentContentObject');
+        $contentObject = $this->configurationManager->getContentObject();
         if (isset($contentObject->data['settings'])) {
             $this->settings = array_replace_recursive($this->settings, json_decode($contentObject->data['settings'], true));
         }
