@@ -75,6 +75,42 @@ class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
         return $data;
     }
 
+    protected function recordInfoWithPermissionCheck(string $table, int $id, int $perms, string $fieldList = '*')
+    {
+        $row = parent::recordInfoWithPermissionCheck($table, $id, $perms, $fieldList);
+
+        if (!is_array($row)) {
+            return $row;
+        }
+
+        $mainFieldsToUnset = [];
+
+        foreach ($GLOBALS['TCA'][$table]['columns'] as $columnName => $columnConfig) {
+            if (str_contains($columnName, '.')) {
+                $mainFieldName = substr($columnName, 0, strpos($columnName, '.'));
+                $mainFieldsToUnset[] = $mainFieldName;
+
+                if (!isset($row[$mainFieldName])) {
+                    continue;
+                }
+
+                $fieldParts = explode('.', substr($columnName, strpos($columnName, '.') + 1));
+                $currentValue = json_decode($row[$mainFieldName] ?? '[]', true);
+                foreach ($fieldParts as $fieldPart) {
+                    $currentValue = $currentValue[$fieldPart] ?? null;
+                }
+
+                $row[$columnName] = $currentValue;
+            }
+        }
+
+        foreach ($mainFieldsToUnset as $mainFieldName) {
+            unset($row[$mainFieldName]);
+        }
+
+        return $row;
+    }
+
     public function updateDB($table, $id, $fieldArray)
     {
         $fieldArray = $this->processDotFields($table, $id, $fieldArray, 'update');
