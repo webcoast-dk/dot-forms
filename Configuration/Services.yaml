@@ -3,17 +3,17 @@ services:
       autowire: true
       autoconfigure: true
       public: false
-   
+
    WEBcoast\DotForms\:
       resource: '../Classes/*'
       exclude: '../Classes/Domain/Model/*'
-      
+
    # Configure data processor
    WEBcoast\DotForms\DataProcessing\DotFormsDataProcessor:
       tags:
          - name: data.processor
            identifier: dot-forms
-      
+
    # Configure event listener
    WEBcoast\DotForms\EventListener\AlterTableDefinitionStatementEventListener:
       tags:

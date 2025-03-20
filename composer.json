@@ -14,17 +14,21 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-main": "1.0.x-dev"
+            "dev-main": "2.0.x-dev"
         },
         "typo3/cms": {
+            "Package": {
+                "serviceProvider": "WEBcoast\\DotForms\\ServiceProvider",
+                "partOfMinimalUsableSystem": true
+            },
             "extension-key": "dot_forms"
         }
     },
     "require": {
-        "typo3/cms-core": "^12.4",
-        "typo3/cms-backend": "^12.4",
-        "typo3/cms-extbase": "^12.4",
-        "typo3/cms-frontend": "^12.4"
+        "typo3/cms-core": "^13.4",
+        "typo3/cms-backend": "^13.4",
+        "typo3/cms-extbase": "^13.4",
+        "typo3/cms-frontend": "^13.4"
     },
     "autoload": {
         "psr-4": {

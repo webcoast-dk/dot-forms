@@ -10,7 +10,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController as ExtbaseActionController
 
 class ActionController extends ExtbaseActionController
 {
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $contentObject = $this->request->getAttribute('currentContentObject');
         if (isset($contentObject->data['settings'])) {

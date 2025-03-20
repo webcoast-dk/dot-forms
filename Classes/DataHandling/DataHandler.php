@@ -10,7 +10,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
 {
-    public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray)
+    public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray): array
     {
         $incomingFieldArray = $fieldArray;
         $fieldArray = array_filter($fieldArray, function ($value) {
@@ -42,18 +42,18 @@ class DataHandler extends \TYPO3\CMS\Core\DataHandling\DataHandler
         return $fieldArray;
     }
 
-    public function updateDB($table, $id, $fieldArray)
+    public function updateDB($table, $uid, $fieldArray, int $recordPid = 0): void
     {
-        $fieldArray = $this->processDotFields($table, $id, $fieldArray, 'update');
+        $fieldArray = $this->processDotFields($table, $uid, $fieldArray, 'update');
 
-        parent::updateDB($table, $id, $fieldArray);
+        parent::updateDB($table, $uid, $fieldArray, $recordPid);
     }
 
-    public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0, $dontSetNewIdIndex = false)
+    public function insertDB($table, $id, $fieldArray, $_ = false, $suggestedUid = 0): ?int
     {
         $fieldArray = $this->processDotFields($table, $id, $fieldArray, 'new');
 
-        return parent::insertDB($table, $id, $fieldArray, $newVersion, $suggestedUid, $dontSetNewIdIndex);
+        return parent::insertDB($table, $id, $fieldArray, $_, $suggestedUid);
     }
 
     protected function processDotFields($table, $id, $fieldArray, $status): array
