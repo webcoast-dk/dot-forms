@@ -12,16 +12,19 @@ use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 #[AsEventListener('dot-forms.record-created')]
-class RecordCreatedEventListener
+readonly class RecordCreatedEventListener
 {
-    public function __construct(protected readonly TcaSchemaFactory $schemaFactory) {}
+    public function __construct(protected TcaSchemaFactory $schemaFactory) {}
 
-    public function __invoke(RecordCreationEvent $event)
+    public function __invoke(RecordCreationEvent $event): void
     {
         $rawRecord = $event->getRawRecord();
 
         try {
-            $schema = $this->schemaFactory->get($event->getRawRecord()->getMainType())->getSubSchema($event->getRawRecord()->getRecordType());
+            $schema = $this->schemaFactory->get($event->getRawRecord()->getMainType());
+            if ($event->getRawRecord()->getRecordType()) {
+                $schema = $schema->getSubSchema($event->getRawRecord()->getRecordType());
+            }
 
             $processedFields = [];
 
