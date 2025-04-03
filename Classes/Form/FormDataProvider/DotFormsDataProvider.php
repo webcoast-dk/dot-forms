@@ -28,6 +28,19 @@ class DotFormsDataProvider implements FormDataProviderInterface
                     }
                     $result['databaseRow'][$fieldName] = $currentArray ?? $result['databaseRow'][$fieldName] ?? null;
                 }
+
+                if (isset($result['defaultLanguageRow'][$mainFieldName])) {
+                    // Get value by dot notation
+                    $fieldParts = explode('.', substr($fieldName, strpos($fieldName, '.') + 1));
+                    $currentArray = json_decode($result['defaultLanguageRow'][$mainFieldName], true);
+                    foreach ($fieldParts as $fieldPart) {
+                        if (!is_array($currentArray)) {
+                            $currentArray = [];
+                        }
+                        $currentArray = $currentArray[$fieldPart] ?? null;
+                    }
+                    $result['defaultLanguageRow'][$fieldName] = $currentArray ?? $result['defaultLanguageRow'][$fieldName] ?? null;
+                }
             }
         }
 
