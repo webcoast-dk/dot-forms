@@ -33,6 +33,7 @@ class ServiceProvider extends \TYPO3\CMS\Core\ServiceProvider
             $container->get(ConnectionPool::class),
             $container->get(Parser::class),
             new TcaSchemaOverride(),
+            $container->get('cache.runtime')
         ]);
     }
 }
