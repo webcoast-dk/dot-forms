@@ -8,6 +8,7 @@ namespace WEBcoast\DotForms\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 
 class DotFormsDataProvider implements FormDataProviderInterface
 {
@@ -17,7 +18,12 @@ class DotFormsDataProvider implements FormDataProviderInterface
     {
         $schema = $this->schemaFactory->get($result['tableName']);
         if ($typeField = $schema->getSubSchemaDivisorField()) {
-            $schema = $schema->getSubSchema((string) $result['databaseRow'][$typeField->getName()] ?: (string) $typeField->getConfiguration()['items'][0]['value']);
+            $subSchema = (string) $result['databaseRow'][$typeField->getName()] ?: (string) $typeField->getConfiguration()['default'];
+            try {
+                $schema = $schema->getSubSchema($subSchema);
+            } catch (UndefinedSchemaException $e) {
+                // maybe add some logging?
+            }
         }
         // Check
         foreach ($schema->getFields(fn ($field) => str_contains($field->getName(), '.')) as $field) {
