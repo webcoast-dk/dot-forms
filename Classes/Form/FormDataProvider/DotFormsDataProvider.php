@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WEBcoast\DotForms\Form\FormDataProvider;
 
-use JsonSchema\Exception\InvalidSchemaException;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -27,7 +26,7 @@ class DotFormsDataProvider implements FormDataProviderInterface
             }
             try {
                 $schema = $schema->getSubSchema($typeValue);
-            } catch (InvalidSchemaException|UndefinedSchemaException) {
+            } catch (UndefinedSchemaException) {
                 // Ignore invalid type value
             }
         }
