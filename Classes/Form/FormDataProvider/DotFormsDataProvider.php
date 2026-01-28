@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-
 namespace WEBcoast\DotForms\Form\FormDataProvider;
 
-
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DotFormsDataProvider implements FormDataProviderInterface
 {
@@ -17,7 +17,18 @@ class DotFormsDataProvider implements FormDataProviderInterface
     {
         $schema = $this->schemaFactory->get($result['tableName']);
         if ($typeField = $schema->getSubSchemaDivisorField()) {
-            $schema = $schema->getSubSchema((string) $result['databaseRow'][$typeField->getName()] ?: (string) $typeField->getConfiguration()['items'][0]['value']);
+            $typeValue = (string) $result['databaseRow'][$typeField->getName()];
+            if ($typeValue === '' && isset($typeField->getConfiguration()['items'][0]['value'])) {
+                $typeValue = (string) $typeField->getConfiguration()['items'][0]['value'];
+            }
+            if ($typeValue === '') {
+                [$_, $typeValue] = GeneralUtility::trimExplode('.', $schema->getSubSchemata()[0]->getName());
+            }
+            try {
+                $schema = $schema->getSubSchema($typeValue);
+            } catch (UndefinedSchemaException) {
+                // Ignore invalid type value
+            }
         }
         // Check
         foreach ($schema->getFields(fn ($field) => str_contains($field->getName(), '.')) as $field) {
